@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  username  String   @unique
+  password  String
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bookmarks Bookmark[]
+  ratings   Rating[]
+  votes     Vote[]
+  threads   Thread[]
+  replies   Reply[]
+
+  @@index([email])
+}
+
+model Film {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  releaseDate DateTime
+  runtime     Int
+  language    String
+  country     String
+  rating      Float
+  genre       String
+  themes      String[]
+  directorId  String?
+  analysis    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  director  Director?  @relation(fields: [directorId], references: [id])
+  threads   Thread[]
+  awards    Award[]
+  ratings   Rating[]
+  bookmarks Bookmark[]
+
+  @@index([title])
+}
+
+model Thread {
+  id        String   @id @default(uuid())
+  filmId    String
+  userId    String
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  film    Film    @relation(fields: [filmId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  replies Reply[]
+}
+
+model Reply {
+  id        String   @id @default(uuid())
+  threadId  String
+  userId    String
+  parentId  String?
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  thread   Thread  @relation(fields: [threadId], references: [id])
+  user     User    @relation(fields: [userId], references: [id])
+  parent   Reply?  @relation("ReplyToReply", fields: [parentId], references: [id])
+  children Reply[] @relation("ReplyToReply")
+  votes    Vote[]
+}
+
+model Award {
+  id       String  @id @default(uuid())
+  filmId   String
+  name     String
+  category String
+  year     Int
+  win      Boolean
+
+  film Film @relation(fields: [filmId], references: [id])
+}
+
+model Director {
+  id    String @id @default(uuid())
+  name  String
+  bio   String
+  films Film[]
+
+  @@index([name])
+}
+
+model Bookmark {
+  id        String   @id @default(uuid())
+  userId    String
+  filmId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  film Film @relation(fields: [filmId], references: [id])
+}
+
+model Rating {
+  id        String   @id @default(uuid())
+  userId    String
+  filmId    String
+  score     Int
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  film Film @relation(fields: [filmId], references: [id])
+}
+
+model Vote {
+  id        String   @id @default(uuid())
+  userId    String
+  filmId    String?
+  replyId   String?
+  value     Int
+  createdAt DateTime @default(now())
+
+  user  User   @relation(fields: [userId], references: [id])
+  reply Reply? @relation(fields: [replyId], references: [id])
+}
