@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import './globals.css';
+import { NextUIProvider } from '@nextui-org/react';
 
 export const metadata: Metadata = {
   title: 'Flicksight',
   description:
-    'A web application that offers comprehensive film summaries and detailed analyses, aiming to enrich understanding of film and cinema.',
+    'Flicksight is a web application providing in-depth film summaries, analyses, and discussions.',
 };
 
 export default function RootLayout({
@@ -13,9 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body>
-        <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+        <NextUIProvider>
+          <main className='dark text-foreground bg-background'>{children}</main>
+        </NextUIProvider>
       </body>
     </html>
   );
