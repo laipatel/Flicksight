@@ -1,3 +1,5 @@
-export const Directors = () => {
+const Directors = () => {
   return <div>Directors</div>;
 };
+
+export default Directors;
