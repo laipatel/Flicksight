@@ -54,10 +54,10 @@ export default function RootLayout({
       lang='en'
       className={`${inter.variable} ${poppins.variable} antialiased`}
     >
-      <body>
+      <body className='dark text-foreground bg-background'>
         <Providers>
           <Header />
-          <main className='dark text-foreground bg-background'>{children}</main>
+          <main>{children}</main>
           <Footer />
         </Providers>
       </body>

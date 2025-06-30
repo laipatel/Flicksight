@@ -15,12 +15,9 @@ type Props = {};
 
 export const Header = (props: Props) => {
   return (
-    <Navbar
-      isBordered
-      className='flex justify-start align-center bg-background'
-    >
+    <Navbar isBordered className='bg-background' maxWidth='xl'>
       <Link href='/'>
-        <NavbarBrand className='max-w-fit mr-6'>
+        <NavbarBrand className='max-w-fit mr-6 justify-start'>
           <Image
             alt='Flicksight Combination Mark Logo'
             src='/images/logos/flicksight-combination-mark.svg'
@@ -28,7 +25,7 @@ export const Header = (props: Props) => {
           />
         </NavbarBrand>
       </Link>
-      <NavbarContent className='gap-x-4 align-center'>
+      <NavbarContent className='gap-x-4' justify='start'>
         <NavbarItem>
           <Link
             href='/films'
@@ -76,15 +73,15 @@ export const Header = (props: Props) => {
       </NavbarContent>
       <NavbarContent justify='end'>
         <NavbarItem>
-          <Link
+          <Button
             href='/auth'
             color='primary'
             size='lg'
-            className='px-6 py-3'
-            isBlock
+            variant='shadow'
+            as={Link}
           >
             Sign Up
-          </Link>
+          </Button>
         </NavbarItem>
       </NavbarContent>
     </Navbar>
